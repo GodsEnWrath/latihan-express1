@@ -10,7 +10,7 @@ const connect = callback => {
         { useNewUrlParser: true, useUnifiedTopology: true},
         function(e, client) {
             if (e) {
-                console.log(E)
+                console.log(e)
                 throw{ ERROR: "Databases Connection is failed"}
             }
             console.log("Connected to database")
