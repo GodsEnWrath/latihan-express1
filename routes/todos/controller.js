@@ -1,18 +1,27 @@
 const { user: users } = require("../../models");
 const { get } = require("../../config");
-const objectId =require("mongodb").ObjectId
-
+const objectId = require("mongodb").ObjectId;
 
 module.exports = {
- 
-
   getAll: (req, res) => {
     get()
-      .collection("todo")
+      .collection("todos")
       .find({})
       .toArray()
       .then(result => {
-        res.send({ message: "Get all Data", data: result });
+        res.send({ message: "Get all datas", data: result });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  getByEmail: (req, res) => {
+    get()
+      .collection("todos")
+      .find({ email: req.params.email })
+      .toArray()
+      .then(result => {
+        res.send({ message: "Get all datas by email", data: result });
       })
       .catch(error => {
         console.log(error);
@@ -22,56 +31,58 @@ module.exports = {
     const { id } = req.params;
 
     get()
-      .collection("todo")
-      // .findOne({ email: req.params.id })
-      .findOne({_id: objectId(id)})
+      .collection("todos")
+      .findOne({ _id: objectId(id) })
       .then(result => {
-        res.send({message: `Get data with id ${id}`,data: result})
-        // res.send({ message: "Get data Id", data: result });
+        res.send({
+          message: `Get data with id ${id}`,
+          data: result
+        });
       })
       .catch(error => {
         console.log(error);
       });
   },
-
   deleteOne: (req, res) => {
-    console.log(req.body);
     const { id } = req.params;
+
     get()
-      .collection("todo")
-      .deleteOne({email: req.params.id})
+      .collection("todos")
+      .deleteOne({ _id: objectId(id) })
       .then(result => {
-        // res.send({ message:`Delete data with id ${id}`, data: result})
-        res.send({ message: "Data sucessfully deleted", data: result });
+        res.send({
+          message: `Delete data with id ${id}`,
+          data: result
+        });
       })
       .catch(error => {
         console.log(error);
       });
   },
-
   addOne: (req, res) => {
     get()
-      .collection("todo")
+      .collection("todos")
       .insertOne(req.body)
       .then(result => {
-        res.send({ message: "Data sucessfully added", data: result });
+        res.status(201).json({
+          message: "Data successfully added",
+          data: result
+        });
       })
       .catch(error => {
         console.log(error);
       });
   },
-
   updateOne: (req, res) => {
     const { id } = req.params;
     get()
-      .collection("todo")
-      .updateOne({ email: req.params.id }, { $set: req.body })
-      // .updateOne({_id: objectId(id)}, { $set: req.body})
+      .collection("todos")
+      .updateOne({ _id: objectId(id) }, { $set: req.body })
       .then(result => {
-        // res.send({
-        //   message: `Data successfully update with id ${id}`, data: result
-        // })
-        res.send({ message: " Data successfully Updated", data: result });
+        res.send({
+          message: `Data successfully update with id ${id}`,
+          data: result
+        });
       })
       .catch(error => {
         console.log(error);
@@ -79,13 +90,14 @@ module.exports = {
   },
 
   deleteAll: (req, res) => {
-    get().collection("todo").drop()
-    .then(result => {
-      res.send({ message: "All todo data Deleted", data: result });
-    })
-    .catch(error => {
-      console.log(error);
-    });
+    get()
+      .collection("todo")
+      .drop()
+      .then(result => {
+        res.send({ message: "All todo data Deleted", data: result });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
-
 };
