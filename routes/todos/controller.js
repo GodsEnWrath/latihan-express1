@@ -91,7 +91,7 @@ module.exports = {
 
   deleteAll: (req, res) => {
     get()
-      .collection("todo")
+      .collection("todos")
       .drop()
       .then(result => {
         res.send({ message: "All todo data Deleted", data: result });

@@ -5,7 +5,7 @@ const objectId = require("mongodb").ObjectId;
 module.exports = {
   getAll: (req, res) => {
     get()
-      .collection("user")
+      .collection("users")
       .find({})
       .toArray()
       .then(result => {
@@ -19,7 +19,7 @@ module.exports = {
     const { id } = req.params;
 
     get()
-      .collection("user")
+      .collection("users")
       // .findOne({ email: req.params.id })
       .findOne({ _id: objectId(id) })
       .then(result => {
@@ -35,7 +35,7 @@ module.exports = {
     const { id } = req.params;
 
     get()
-      .collection("user")
+      .collection("users")
       // .deleteOne({email: req.params.id})
       .deleteOne({ _id: objectId(id) })
       .then(result => {
@@ -49,7 +49,7 @@ module.exports = {
 
   addOne: (req, res) => {
     get()
-      .collection("user")
+      .collection("users")
       .insertOne(req.body)
       .then(result => {
         res.status(201).send({
@@ -66,7 +66,7 @@ module.exports = {
   updateOne: (req, res) => {
     const { id } = req.params;
     get()
-      .collection("user")
+      .collection("users")
       // .updateOne({ email: req.params.id }, { $set: req.body })
       .updateOne({ _id: objectId(id) }, { $set: req.body })
       .then(result => {
@@ -83,7 +83,7 @@ module.exports = {
 
   deleteAll: (req, res) => {
     get()
-      .collection("user")
+      .collection("users")
       .drop()
       .then(result => {
         res.send({ message: "All User Deleted", data: result });
@@ -97,13 +97,13 @@ module.exports = {
     console.log(req.body);
 
     get()
-      .collection("user")
+      .collection("users")
       .findOne({ email: req.body.email, password: req.body.password })
       .then(response => {
-        const { email, firstName } = response;
+        const { email, firstName,_id } = response;
         res.status(200).send({
           message: "Login Successfull",
-          data: { email, firstName }
+          data: { email, firstName, id:_id }
         });
       })
       .catch(error => {

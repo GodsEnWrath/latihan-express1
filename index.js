@@ -19,6 +19,6 @@ app.use("/validate", require("./routes/validate"));
 
 connect(() => {
   app.listen(PORT, () => {
-    console.log(`This app listening on PORT: ${PORT || 3000}`);
+    console.log(`This app listening on PORT: ${PORT}`);
   });
 });

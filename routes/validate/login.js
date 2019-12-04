@@ -4,7 +4,7 @@ const login = async ({ email, password }) => {
     try {
         const result = {};
         const data = await get()
-            .collection("user")
+            .collection("users")
             .findOne({ email: email, password: password });
 
         if (!email) {
